@@ -4,16 +4,16 @@ AVRDUDE=avrdude
 CFLAGS=-Os -DF_CPU=1000000 -mmcu=attiny85
 PORT=/dev/ttyACM0
 BAUDE=19200
-all: led_flash.hex 
+all: write_char.hex 
 
-led_flash.hex: led_flash.elf
+write_char.hex: write_char.elf
 	$(OBJCOPY) -O ihex $< $@
-led_flash.elf: main.c
+write_char.elf: main.c
 	$(CC) $(CFLAGS) -o $@ $^ 
-upload: led_flash.hex 
+upload: write_char.hex 
 	$(AVRDUDE) -c avrisp -p attiny85 -b $(BAUDE) -P $(PORT)  -U flash:w:$< 
 
 clean: 
-	$(RM) led_flash.elf led_flash.hex 
+	$(RM) write_char.elf write_char.hex 
 
 .PHONY: all upload clean
